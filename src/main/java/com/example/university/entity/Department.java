@@ -1,0 +1,31 @@
+package com.example.university.entity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "departments")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Department {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Department name is required")
+    @Column(nullable = false, unique = true, length = 100)
+    private String name;
+
+    @NotBlank(message = "Department code is required")
+    @Column(nullable = false, unique = true, length = 10)
+    private String code;
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Student> students = new ArrayList<>();
+}
